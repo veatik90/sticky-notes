@@ -1,0 +1,6 @@
+.zoneContainer {
+  width: 100%;
+  flex-grow: 1;
+  position: relative;
+  background-color: #f5f5f5;
+}
