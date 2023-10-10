@@ -16,15 +16,30 @@ export const Dashboard: FC = () => {
         text: "",
         width: DEFAULT_NOTE_SIZE,
         height: DEFAULT_NOTE_SIZE,
+        appearance: "back",
       };
       return [...prevNotes, newNote];
+    });
+  };
+
+  const changeNoteAppearanceHandler = (id: string) => {
+    setNotes((prevNotes) => {
+      const updatedNotes: Note[] = prevNotes.map((note) => ({
+        ...note,
+        appearance: id === note.id ? "front" : "back",
+      }));
+
+      return updatedNotes;
     });
   };
 
   return (
     <div className={styles.dashboardContainer}>
       <Header addNote={addNewNoteHandler} />
-      <WorkingZone notes={notes} />
+      <WorkingZone
+        notes={notes}
+        changeNotesAppearance={changeNoteAppearanceHandler}
+      />
     </div>
   );
 };
