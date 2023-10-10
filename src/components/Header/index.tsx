@@ -1,12 +1,13 @@
 import { FC } from "react";
 import styles from "./styles.module.css";
 import { Button } from "../ui/Button";
+import { HeaderProps } from "./interfaces";
 
-export const Header: FC = () => {
+export const Header: FC<HeaderProps> = ({ addNote }) => {
   return (
     <div className={styles.headerContainer}>
       <h3>Sticky Notes</h3>
-      <Button>Add Note +</Button>
+      <Button onClick={addNote}>Add Note +</Button>
     </div>
   );
 };

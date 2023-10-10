@@ -1,14 +1,16 @@
 .noteContainer {
-  min-height: 320px;
-  min-width: 320px;
+  min-height: var(--default-note-size);
+  min-width: var(--default-note-size);
   background-color: #ffcab0;
-  height: 320px;
-  width: 320px;
+  height: var(--default-note-size);
+  width: var(--default-note-size);
   border-radius: 10px;
   resize: both;
   overflow: auto;
   padding: 10px;
   overflow: hidden;
+  position: absolute;
+  border: 1px solid #ff7e67;
 }
 
 textarea {
