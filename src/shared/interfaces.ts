@@ -3,5 +3,5 @@ export interface Note {
   text: string;
   width: number;
   height: number;
-  appearance: "back" | "front";
+  zIndex: number;
 }

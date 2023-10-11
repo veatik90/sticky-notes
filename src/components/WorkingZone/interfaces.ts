@@ -1,6 +1,6 @@
-import { Note } from "../../shared/interfaces";
-
 export interface WorkingZoneProps {
-  notes: Note[];
-  changeNotesAppearance: (id: string) => void;
+  noteIds: string[];
+  activeNoteId?: string;
+  setActiveNote: (id: string) => void;
+  deleteNote: (id: string) => void;
 }

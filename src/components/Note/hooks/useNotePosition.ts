@@ -20,6 +20,6 @@ export const useNotePosition = (
     );
 
     noteRef.current?.style.setProperty("top", `${posY}px`);
-    noteRef.current?.style.setProperty("right", `${posX}px`);
+    noteRef.current?.style.setProperty("left", `${posX}px`);
   }, [noteRef, parentRef]);
 };

@@ -1,7 +1,9 @@
-import { Note } from "../../shared/interfaces";
-
 export interface NoteProps {
-  note: Note;
+  id: string;
+  order: number;
   zoneRef: React.RefObject<HTMLDivElement>;
-  changeNotesAppearance: (id: string) => void;
+  trashZoneRef: React.RefObject<HTMLDivElement>;
+  isActive: boolean;
+  setActiveNote: (id: string) => void;
+  deleteNote: (id: string) => void;
 }
