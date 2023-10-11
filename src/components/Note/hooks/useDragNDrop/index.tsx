@@ -4,11 +4,12 @@ import { UseDragNDropParams } from "./interfaces";
 import { setBorderColor } from "./utils";
 
 export function useDragNDrop(params: UseDragNDropParams) {
-  const { refs, id, deleteNote } = params;
+  const { refs, id, deleteNote, savePosition, isActive, position } = params;
   const { noteRef, trashZoneRef, innerRef, parentRef } = refs;
   const isClicked = useRef<boolean>(false);
 
   const offsets = useRef({ offsetX: 0, offsetY: 0 });
+  const notePosition = useRef({ x: position?.x ?? 0, y: position?.y ?? 0 });
   const trazhZoneTop = useRef(0);
   const canDelete = useRef(false);
 
@@ -36,6 +37,9 @@ export function useDragNDrop(params: UseDragNDropParams) {
       }
       canDelete.current = false;
       setBorderColor(trashZoneRef, "inherit");
+      if (isActive) {
+        savePosition(notePosition.current.x, notePosition.current.y);
+      }
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -54,12 +58,12 @@ export function useDragNDrop(params: UseDragNDropParams) {
         }
       }
 
-      const nextX = e.clientX - offsets.current.offsetX;
+      notePosition.current.x = e.clientX - offsets.current.offsetX;
 
-      const nextY = e.clientY - offsets.current.offsetY;
+      notePosition.current.y = e.clientY - offsets.current.offsetY;
 
-      noteRef.current?.style.setProperty("top", `${nextY}px`);
-      noteRef.current?.style.setProperty("left", `${nextX}px`);
+      noteRef.current?.style.setProperty("top", `${notePosition.current.y}px`);
+      noteRef.current?.style.setProperty("left", `${notePosition.current.x}px`);
     };
 
     innerRef.current?.addEventListener("mousedown", onMouseDown);
@@ -75,5 +79,14 @@ export function useDragNDrop(params: UseDragNDropParams) {
     };
 
     return cleanup;
-  }, [noteRef, parentRef, innerRef, trashZoneRef, deleteNote, id]);
+  }, [
+    noteRef,
+    parentRef,
+    innerRef,
+    trashZoneRef,
+    deleteNote,
+    id,
+    savePosition,
+    isActive,
+  ]);
 }

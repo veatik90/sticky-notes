@@ -1,12 +1,14 @@
-import { FC, useRef, useCallback, useState, memo } from "react";
+import { FC, useRef, useCallback, memo } from "react";
 
 import styles from "./styles.module.css";
 import { NoteProps } from "./interfaces";
-import { useNotePosition } from "./hooks/useNotePosition";
+import { useNoteInit } from "./hooks/useNoteInit";
 import { useDragNDrop } from "./hooks/useDragNDrop";
 import { NoteRefs } from "./hooks/useDragNDrop/interfaces";
-import { Note as NoteType } from "../../shared/interfaces";
-import { DEFAULT_NOTE_SIZE, MAX_ZINDEX } from "../../shared/constants";
+import { Position, Size } from "../../shared/interfaces";
+import { MAX_ZINDEX } from "../../shared/constants";
+import { useNoteResize } from "./hooks/useNoteResize";
+import { useNoteState } from "./hooks/useNoteState";
 
 export const NoteBase: FC<NoteProps> = (props) => {
   const {
@@ -19,20 +21,26 @@ export const NoteBase: FC<NoteProps> = (props) => {
     deleteNote,
   } = props;
 
-  console.log("render");
-
-  const [note, setNote] = useState<NoteType>({
+  const { note, savePosition, saveSizes, changeInput } = useNoteState({
     id,
-    text: "",
-    width: DEFAULT_NOTE_SIZE,
-    height: DEFAULT_NOTE_SIZE,
-    zIndex: order + 2,
+    order,
+    isActive,
   });
 
   const noteRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  useNotePosition(noteRef, zoneRef);
+  const position: Position = { x: note.posX, y: note.posY };
+  const sizes: Size = { width: note.width, height: note.height };
+
+  useNoteInit({
+    refs: { noteRef, parentRef: zoneRef },
+    position,
+    sizes,
+    savePosition,
+  });
+
+  useNoteResize(noteRef, saveSizes);
 
   const refs: NoteRefs = {
     noteRef,
@@ -40,7 +48,15 @@ export const NoteBase: FC<NoteProps> = (props) => {
     parentRef: zoneRef,
     innerRef,
   };
-  useDragNDrop({ id: note.id, refs, deleteNote });
+
+  useDragNDrop({
+    id: note.id,
+    refs,
+    deleteNote,
+    savePosition,
+    isActive,
+    position,
+  });
 
   const clickNoteHandler = useCallback(() => {
     setActiveNote(note.id);
@@ -54,7 +70,7 @@ export const NoteBase: FC<NoteProps> = (props) => {
       onClick={clickNoteHandler}
     >
       <div ref={innerRef} className={styles.innerContainer}>
-        <textarea />
+        <textarea value={note.text} onChange={changeInput} />
       </div>
     </div>
   );
