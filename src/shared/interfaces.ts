@@ -4,6 +4,7 @@ export type Note = {
   width: number;
   height: number;
   zIndex: number;
+  color: string;
   posX?: number;
   posY?: number;
 };

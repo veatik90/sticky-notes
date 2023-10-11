@@ -4,19 +4,20 @@ import { DEFAULT_NOTE_SIZE } from "../../../../shared/constants";
 import { UseNoteInitParams } from "./interfaces";
 
 export const useNoteInit = (params: UseNoteInitParams) => {
-  const { refs, position, sizes, savePosition } = params;
+  const { refs, note, savePosition } = params;
 
   const { noteRef, parentRef } = refs;
 
-  const { width, height } = sizes;
+  const { posX: noteX, posY: noteY, width, height, color } = note;
 
   useLayoutEffect(() => {
     noteRef.current?.style.setProperty("width", `${width}px`);
     noteRef.current?.style.setProperty("height", `${height}px`);
+    noteRef.current?.style.setProperty("background-color", color);
 
-    if (position?.x && position.y) {
-      noteRef.current?.style.setProperty("top", `${position.y}px`);
-      noteRef.current?.style.setProperty("left", `${position.x}px`);
+    if (noteX && noteY) {
+      noteRef.current?.style.setProperty("top", `${noteY}px`);
+      noteRef.current?.style.setProperty("left", `${noteX}px`);
     } else {
       const boundaries = parentRef.current?.getBoundingClientRect();
 

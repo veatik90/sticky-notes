@@ -10,15 +10,18 @@
 // };
 
 import { LocalStorageService } from "../../services/localStorage";
-import { DEFAULT_NOTE_SIZE } from "../../shared/constants";
+import { COLORS, DEFAULT_NOTE_SIZE } from "../../shared/constants";
+import { getRandomInInterval } from "../../shared/utils/getRandomInInterval";
 
 export const getDefaultNote = (id: string, order: number) => {
+  const num = getRandomInInterval(0, COLORS.length - 1);
   return {
     id,
     text: "",
     width: DEFAULT_NOTE_SIZE,
     height: DEFAULT_NOTE_SIZE,
     zIndex: order + 2,
+    color: COLORS[num],
   };
 };
 

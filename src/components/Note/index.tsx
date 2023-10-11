@@ -5,7 +5,7 @@ import { NoteProps } from "./interfaces";
 import { useNoteInit } from "./hooks/useNoteInit";
 import { useDragNDrop } from "./hooks/useDragNDrop";
 import { NoteRefs } from "./hooks/useDragNDrop/interfaces";
-import { Position, Size } from "../../shared/interfaces";
+import { Position } from "../../shared/interfaces";
 import { MAX_ZINDEX } from "../../shared/constants";
 import { useNoteResize } from "./hooks/useNoteResize";
 import { useNoteState } from "./hooks/useNoteState";
@@ -30,13 +30,9 @@ export const NoteBase: FC<NoteProps> = (props) => {
   const noteRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const position: Position = { x: note.posX, y: note.posY };
-  const sizes: Size = { width: note.width, height: note.height };
-
   useNoteInit({
     refs: { noteRef, parentRef: zoneRef },
-    position,
-    sizes,
+    note,
     savePosition,
   });
 
@@ -48,6 +44,8 @@ export const NoteBase: FC<NoteProps> = (props) => {
     parentRef: zoneRef,
     innerRef,
   };
+
+  const position: Position = { x: note.posX, y: note.posY };
 
   useDragNDrop({
     id: note.id,

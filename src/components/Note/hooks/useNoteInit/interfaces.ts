@@ -1,4 +1,4 @@
-import { Position, Size } from "../../../../shared/interfaces";
+import { Note } from "../../../../shared/interfaces";
 
 export interface NoteRefs {
   noteRef: React.RefObject<HTMLDivElement>;
@@ -7,7 +7,6 @@ export interface NoteRefs {
 
 export interface UseNoteInitParams {
   refs: NoteRefs;
-  position?: Position;
-  sizes: Size;
+  note: Note;
   savePosition: (posX: number, posY: number) => void;
 }
