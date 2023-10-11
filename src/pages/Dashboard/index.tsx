@@ -20,7 +20,7 @@ export const Dashboard: FC = () => {
 
   const addNewNoteHandler = () => {
     setNoteIds((prevIds) => {
-      return [...prevIds, `${pageId}-${prevIds.length}`];
+      return [...prevIds, `${pageId}-${prevIds.length}-${Math.random()}`];
     });
   };
 
@@ -42,7 +42,6 @@ export const Dashboard: FC = () => {
         noteIds={noteIds}
         activeNoteId={activeNoteId}
         isLoading={isLoading}
-        error={error}
         setActiveNote={setActiveNoteHandler}
         deleteNote={deleteNoteHandler}
       />
