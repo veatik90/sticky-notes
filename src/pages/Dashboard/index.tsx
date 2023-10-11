@@ -1,15 +1,22 @@
-import { FC, useCallback, useId, useState } from "react";
+import { FC, useCallback, useEffect, useId, useState } from "react";
 import styles from "./styles.module.css";
 import { Header } from "../../components/Header";
 import { WorkingZone } from "../../components/WorkingZone";
 import { LocalStorageService } from "../../services/localStorage";
+import { useGetNotes } from "../../services/rest/hooks/useGetNotes";
 
 export const Dashboard: FC = () => {
   const pageId = useId();
-  const [noteIds, setNoteIds] = useState<string[]>(
-    LocalStorageService.getNoteIds()
-  );
+  const [noteIds, setNoteIds] = useState<string[]>([]);
   const [activeNoteId, setActiveNoteId] = useState<string | undefined>();
+
+  const { isLoading, error, noteIds: ids } = useGetNotes();
+
+  useEffect(() => {
+    if (!isLoading && ids) {
+      setNoteIds(ids);
+    }
+  }, [ids, isLoading]);
 
   const addNewNoteHandler = () => {
     setNoteIds((prevIds) => {
@@ -30,10 +37,12 @@ export const Dashboard: FC = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <Header addNote={addNewNoteHandler} />
+      <Header addNote={addNewNoteHandler} error={error} />
       <WorkingZone
         noteIds={noteIds}
         activeNoteId={activeNoteId}
+        isLoading={isLoading}
+        error={error}
         setActiveNote={setActiveNoteHandler}
         deleteNote={deleteNoteHandler}
       />

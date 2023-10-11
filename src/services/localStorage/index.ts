@@ -46,4 +46,12 @@ export class LocalStorageService {
 
     localStorage.setItem(this.key, JSON.stringify(updatedNotes));
   }
+
+  static setNotes(notes: Note[]) {
+    localStorage.setItem(this.key, JSON.stringify(notes));
+  }
+
+  static deleteNotes() {
+    localStorage.removeItem(this.key);
+  }
 }
